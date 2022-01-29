@@ -1,7 +1,17 @@
 import java.util.Random;
 
 /**
- * Assign1
+ * In this assignment we explore the implementation and comaprison of sorting algorithms. We used some websites to remind ourselves how certain 
+ * sorting methods work. Those can be found below:
+ * 
+ * 1) https://www.geeksforgeeks.org/quick-sort/
+ * 2) https://www.baeldung.com/java-merge-sort
+ * 3) https://www.geeksforgeeks.org/selection-sort/
+ * 4) https://www.geeksforgeeks.org/insertion-sort/
+ * 
+ * Assignment No: 1
+ * Authors: Nasih Nazeem, Nestor Chacin
+ * Date: Jan 28, 2022
  */
 public class Assign1 {
 
