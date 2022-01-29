@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Random;
 
 /**
@@ -19,19 +22,57 @@ public class Assign1 {
     private String order;               // order inputted from user (ascending, descending, random)
     private int size;                   // user inputted size of the array
     private String algo;                // user inputted sort algorithm (selection, insertion, merge, quick)
+    private String filename;            // user inputted file name that the sorted array is written to
     private int arr[];                  // array generated with random values input
     
     public static void main(String[] args) {
         Assign1 a1 = new Assign1();     // Object created to interact with static main
-
+        
         a1.order = args[0];
         a1.size = Integer.parseInt(args[1]);
         a1.algo = args[2];
+        a1.filename = args[3];
+
 
         a1.arr = new int [a1.size];
 
         a1.fillRandom();                // Filling array with random integers
         a1.chooseAlgorithm();           // match the algorithm within a switch statement, to then call upon an appropriate sorting function
+        a1.createFile();
+               
+    }
+
+    public void createFile(){
+        try{
+
+            File f = new File(filename);
+            if(f.createNewFile()){
+                System.out.println("File created:" + f.getName());
+                fileWrite(); 
+            } else
+                System.out.println("File already exists.");
+
+        } catch (IOException e) {
+            System.out.println("An error has occured.");
+            e.printStackTrace();
+        }
+    }
+
+    public void fileWrite(){
+        try{
+
+            FileWriter writer = new FileWriter(filename);
+
+            for(int i = 0; i < arr.length; i++){
+                writer.write(String.valueOf(arr[i]) + "\n");
+            }
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("An error has occured.");
+            e.printStackTrace();
+
+        }
     }
 
 
@@ -354,5 +395,50 @@ public class Assign1 {
         return (i+1);
     }
 
+    /**
+    public void chooseOrder(){
+        switch(order){
+            case "random":
+                fillRandom();
+                break;
+            case "ascending":
+                fillAscending();
+                break;
+            case "descending":
+                fillDescending();
+                break;
+            default:
+
+        }
+    }
+
+    public void fillAscending(){
+        int temp = 0;
+        arr[0] = temp;
+        for(int i = 1; i < arr.length; i++){
+            temp = random.nextInt(100);
+            if(temp > arr[i-1])
+                arr[i] = temp;
+            else{
+                arr[i] = arr[i-1];
+                arr[i-1] = temp;
+            }
+        }
+    }
+
+    public void fillDescending(){
+        int temp = 0;
+        arr[0] = temp;
+        for(int i = 1; i < arr.length; i++){
+            temp = random.nextInt(100);
+            if(temp < arr[i-1])
+                arr[i] = temp;
+            else{
+                arr[i] = arr[i-1];
+                arr[i-1] = temp;
+            }
+        }
+    }
+    **/
     
 }
