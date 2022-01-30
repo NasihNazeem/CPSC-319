@@ -1,7 +1,8 @@
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * In this assignment we explore the implementation and comaprison of sorting algorithms. We used some websites to remind ourselves how certain 
@@ -36,21 +37,78 @@ public class Assign1 {
             a1.size = Integer.parseInt(args[1]);
             a1.algo = args[2];
             a1.filename = args[3];
-            a1.arr = new int [a1.size];
         } catch (NegativeArraySizeException e) {
             System.out.println("Illegal argument found. Aborting...");
             System.exit(0);
         }
 
        
-
-        a1.fillRandom();                // Filling array with random integers
+        a1.orderFill();
         a1.chooseAlgorithm();           // match the algorithm within a switch statement, to then call upon an appropriate sorting function
         a1.createFile();
         a1.printTime();
                
     }
 
+    public void orderFill(){
+        switch(order){
+            case "ascending":
+                fillAscending();
+                break;
+            case "descending":
+                fillDescending();
+                break;
+            case "random":
+                fillRandom();
+                break;
+            default:
+                System.err.println("Please re-run the program and choose an appropriate order. (Random | Ascending | Descending)");
+                System.exit(0);
+                break;
+        }
+    }
+    public void fillAscending(){
+        fillRandom();
+        Arrays.sort(arr);
+        
+    }
+
+    public void fillDescending(){
+        
+        fillRandom();
+        List<Integer> list = Arrays.stream(arr).boxed().collect(Collectors.toList());
+        Collections.sort(list);
+        Collections.reverse(list);
+        arr = list.stream().mapToInt(i->i).toArray();
+    }
+
+    public static void reverse(int[] array)
+    {
+        // Length of the array
+        int n = array.length;
+  
+        // Swaping the first half elements with last half
+        // elements
+        for (int i = 0; i < n / 2; i++) {
+  
+            // Storing the first half elements temporarily
+            int temp = array[i];
+  
+            // Assigning the first half to the last half
+            array[i] = array[n - i - 1];
+  
+            // Assigning the last half to the first half
+            array[n - i - 1] = temp;
+        }
+    }
+
+    /**
+     * PROMISES: Filling an empty array that is arbitrarily sized with random integers..These integers are within the 0 to 100 boundary.
+     * REQUIRES: N/A.
+     */
+    public void fillRandom() {
+        arr = new Random().ints().limit(size).toArray();
+    }
 
 
     public void printTime(){
@@ -99,6 +157,7 @@ public class Assign1 {
 
         switch(algo){
             case "selection":
+
                 startTime = System.nanoTime();
                 selectionSort();
                 elapsedTime = System.nanoTime() - startTime;
@@ -144,15 +203,7 @@ public class Assign1 {
 
     }
 
-    /**
-     * PROMISES: Filling an empty array that is arbitrarily sized with random integers..These integers are within the 0 to 100 boundary.
-     * REQUIRES: N/A.
-     */
-    public void fillRandom(){
-        for(int i = 0; i < arr.length; i++) {
-            arr[i] = random.nextInt(100000000);
-        }
-    }
+    
 
     /**
      * PROMISES: Looks into the order requested, and sorts the array based upon that order.
@@ -161,43 +212,19 @@ public class Assign1 {
     public void selectionSort(){
 
         int min;
-        switch(order){
-            case "ascending":
-                for(int i = 0; i < arr.length - 1; i++){
-                    min = i;
+        for(int i = 0; i < arr.length - 1; i++){
+            min = i;
 
-                    for(int j = i + 1; j < arr.length; j++) {
-                        if(arr[j] < arr[min]) {
-                            min = j;
-                        }
-                    }
+            for(int j = i + 1; j < arr.length; j++) {
+                if(arr[j] < arr[min]) {
 
-                    swap(arr, min, i);
+                    min = j;
                 }
+            }
 
-                break;
-            case "descending":
-                for(int i = 0; i < arr.length - 1; i++){
-                    min = i;
-
-                    for(int j = i + 1; j < arr.length; j++) {
-                        if(arr[j] > arr[min]) {
-                            min = j;
-                        }
-                    }
-
-                    swap(arr, min, i);
-                }
-
-                break;
-
-            case "random":
-                break;
-
-            default:
-                System.err.println("Please re-run the program and choose an appropriate order. (Random | Ascending | Descending)");
-                System.exit(0);
+            swap(arr, min, i);
         }
+
 
     }
     
@@ -207,39 +234,17 @@ public class Assign1 {
      * REQUIRES: N/A.
      */
     public void insertionSort(){
-        switch(order){
-            case "ascending":
-                for(int i = 1; i < arr.length; ++i){
-                    int key = arr[i];
-                    int j = i-1;
+
+        for(int i = 1; i < arr.length; ++i){
+            int key = arr[i];
+            int j = i-1;
 
 
-                    while( j >= 0 && arr[j] > key) {
-                        arr[j+1] = arr[j];
-                        j = j - 1;
-                    }
-                    arr[j+1] = key;
-                }
-                break;
-            case "descending":
-                for(int i = 1; i < arr.length; ++i){
-                    int key = arr[i];
-                    int j = i-1;
-
-
-                    while( j >= 0 && arr[j] < key) {
-                        arr[j+1] = arr[j];
-                        j = j - 1;
-                    }
-                    arr[j+1] = key;
-                }
-                break;
-            case "random":
-                break;
-
-            default:
-                System.err.println("Please re-run the program and choose an appropriate order. (Random | Ascending | Descending)");
-                System.exit(0);
+            while( j >= 0 && arr[j] > key) {
+                arr[j+1] = arr[j];
+                j = j - 1;
+            }
+            arr[j+1] = key;
         }
     }
 
@@ -248,8 +253,7 @@ public class Assign1 {
      * REQUIRES: N/A.
      */
     public void mergeSort(){
-        sort(arr,arr.length);                
-        
+        sort(arr,arr.length);
     }
 
     /**
@@ -274,19 +278,8 @@ public class Assign1 {
         sort(l, mid);
         sort(r, length-mid);
 
-        switch(order){
-            case "ascending":
-                ascendMerge(arr, l, r, mid, length - mid);
-                break;
-            case "descending":
-                descendMerge(arr, l, r, mid, length - mid);
-                break;
-            case "random":
-                break;
-            default:
-                System.err.println("Please re-run the program and choose an appropriate order. (Random | Ascending | Descending)");
-                System.exit(0);
-        }
+        
+        ascendMerge(arr, l, r, mid, length - mid);
         
         
     }
@@ -317,9 +310,10 @@ public class Assign1 {
     }
 
     /**
+    /**
      * PROMISES: Once mergeSort has completed the sorting of the two sub-arrays, this function merges both arrays into an descending order.
      * REQUIRES: Main array, left sub-array, right sub-array, last index of left array, last index of right array.
-     */
+    
     public void descendMerge(int arr[], int [] l, int [] r, int left, int right){
 
         int i = 0, j = 0, k = 0;
@@ -339,7 +333,7 @@ public class Assign1 {
             arr[k++] = r[j++];
         }
         
-    }
+    } 
 
     /**
      * PROMISES: Uses a pivotSort function that pivots on certain values in the array to sort as reference.
@@ -356,29 +350,10 @@ public class Assign1 {
     public void pivotSort(int [] arr, int low, int high) {
         int pi;
         if(low < high){
-            switch(order){
-                case "ascending":
-                    pi = ascendPartition(arr,low,high);
+            pi = ascendPartition(arr,low,high);
 
-                    pivotSort(arr, low, pi-1);
-                    pivotSort(arr, pi +1 , high);
-                    break;
-                case "descending":
-                    pi = descendPartition(arr,low,high);
-
-                    pivotSort(arr, low, pi-1);
-                    pivotSort(arr, pi +1 , high);
-                    break;
-                case "random":
-                    break;
-                default:
-                    System.err.println("Please re-run the program and choose an appropriate order. (Random | Ascending | Descending)");
-                    System.exit(0);
-
-            }
-            
-
-
+            pivotSort(arr, low, pi-1);
+            pivotSort(arr, pi +1 , high);
             
         }
     }
@@ -409,7 +384,7 @@ public class Assign1 {
     /**
      * PROMISES: Arranges the array using the pivot to sort in an descending order.
      * REQUIRES: Main array, first index, last index.
-     */
+     
     public int descendPartition(int [] arr, int low, int high) {
         
         int pivot = arr[high];
@@ -427,6 +402,6 @@ public class Assign1 {
 
         swap(arr, i+1, high);
         return (i+1);
-    }
+    }*/
     
 }
