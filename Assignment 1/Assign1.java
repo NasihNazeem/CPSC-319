@@ -27,16 +27,22 @@ public class Assign1 {
     private long startTime;             // Start time of beginning of sorting method (in nanoseconds)
     private long elapsedTime;           // Elapssed time of the sorting method (in nanoseconds) 
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+
         Assign1 a1 = new Assign1();     // Object created to interact with static main
         
-        a1.order = args[0];
-        a1.size = Integer.parseInt(args[1]);
-        a1.algo = args[2];
-        a1.filename = args[3];
+        try{
+            a1.order = args[0];
+            a1.size = Integer.parseInt(args[1]);
+            a1.algo = args[2];
+            a1.filename = args[3];
+            a1.arr = new int [a1.size];
+        } catch (NegativeArraySizeException e) {
+            System.out.println("Illegal argument found. Aborting...");
+            System.exit(0);
+        }
 
-
-        a1.arr = new int [a1.size];
+       
 
         a1.fillRandom();                // Filling array with random integers
         a1.chooseAlgorithm();           // match the algorithm within a switch statement, to then call upon an appropriate sorting function
@@ -44,6 +50,8 @@ public class Assign1 {
         a1.printTime();
                
     }
+
+
 
     public void printTime(){
         System.out.println("The elapsed time of the " + order + " sorting algorithm is: " + elapsedTime + " nanoseconds.");
@@ -87,7 +95,8 @@ public class Assign1 {
      * PROMISES: Choosing an algorithm that matches the algorithm the user requested.
      * REQUIRES: N/A.
      */
-    public void chooseAlgorithm(){
+    public void chooseAlgorithm() {
+
         switch(algo){
             case "selection":
                 startTime = System.nanoTime();
@@ -113,6 +122,8 @@ public class Assign1 {
                 break;
 
             default:
+                System.err.println("Please re-run the program and choose an appropriate algorithm. (Selection | Insertion | Merge | Quick)");
+                System.exit(0);
 
         }
     }
@@ -139,7 +150,7 @@ public class Assign1 {
      */
     public void fillRandom(){
         for(int i = 0; i < arr.length; i++) {
-            arr[i] = random.nextInt(100);
+            arr[i] = random.nextInt(100000000);
         }
     }
 
@@ -163,9 +174,7 @@ public class Assign1 {
 
                     swap(arr, min, i);
                 }
-                for(int i = 0; i < arr.length; i++){
-                    System.out.println(arr[i]);
-                }
+
                 break;
             case "descending":
                 for(int i = 0; i < arr.length - 1; i++){
@@ -179,10 +188,15 @@ public class Assign1 {
 
                     swap(arr, min, i);
                 }
-                for(int i = 0; i < arr.length; i++){
-                    System.out.println(arr[i]);
-                }
+
                 break;
+
+            case "random":
+                break;
+
+            default:
+                System.err.println("Please re-run the program and choose an appropriate order. (Random | Ascending | Descending)");
+                System.exit(0);
         }
 
     }
@@ -206,9 +220,6 @@ public class Assign1 {
                     }
                     arr[j+1] = key;
                 }
-                for(int i = 0; i < arr.length; i++){
-                    System.out.println(arr[i]);
-                }
                 break;
             case "descending":
                 for(int i = 1; i < arr.length; ++i){
@@ -222,10 +233,13 @@ public class Assign1 {
                     }
                     arr[j+1] = key;
                 }
-                for(int i = 0; i < arr.length; i++){
-                    System.out.println(arr[i]);
-                }
                 break;
+            case "random":
+                break;
+
+            default:
+                System.err.println("Please re-run the program and choose an appropriate order. (Random | Ascending | Descending)");
+                System.exit(0);
         }
     }
 
@@ -234,10 +248,7 @@ public class Assign1 {
      * REQUIRES: N/A.
      */
     public void mergeSort(){
-        sort(arr,arr.length);
-        for(int i = 0; i < arr.length; i++){
-            System.out.println(arr[i]);
-        }                    
+        sort(arr,arr.length);                
         
     }
 
@@ -270,6 +281,11 @@ public class Assign1 {
             case "descending":
                 descendMerge(arr, l, r, mid, length - mid);
                 break;
+            case "random":
+                break;
+            default:
+                System.err.println("Please re-run the program and choose an appropriate order. (Random | Ascending | Descending)");
+                System.exit(0);
         }
         
         
@@ -330,10 +346,7 @@ public class Assign1 {
      * REQUIRES: N/A.
      */
     public void quickSort(){
-        pivotSort(arr, 0, arr.length - 1);
-        for(int i = 0; i < arr.length; i++){
-            System.out.println(arr[i]);
-        }      
+        pivotSort(arr, 0, arr.length - 1);   
     }
 
     /**
@@ -356,6 +369,11 @@ public class Assign1 {
                     pivotSort(arr, low, pi-1);
                     pivotSort(arr, pi +1 , high);
                     break;
+                case "random":
+                    break;
+                default:
+                    System.err.println("Please re-run the program and choose an appropriate order. (Random | Ascending | Descending)");
+                    System.exit(0);
 
             }
             
@@ -410,51 +428,5 @@ public class Assign1 {
         swap(arr, i+1, high);
         return (i+1);
     }
-
-    /**
-    public void chooseOrder(){
-        switch(order){
-            case "random":
-                fillRandom();
-                break;
-            case "ascending":
-                fillAscending();
-                break;
-            case "descending":
-                fillDescending();
-                break;
-            default:
-
-        }
-    }
-
-    public void fillAscending(){
-        int temp = 0;
-        arr[0] = temp;
-        for(int i = 1; i < arr.length; i++){
-            temp = random.nextInt(100);
-            if(temp > arr[i-1])
-                arr[i] = temp;
-            else{
-                arr[i] = arr[i-1];
-                arr[i-1] = temp;
-            }
-        }
-    }
-
-    public void fillDescending(){
-        int temp = 0;
-        arr[0] = temp;
-        for(int i = 1; i < arr.length; i++){
-            temp = random.nextInt(100);
-            if(temp < arr[i-1])
-                arr[i] = temp;
-            else{
-                arr[i] = arr[i-1];
-                arr[i-1] = temp;
-            }
-        }
-    }
-    **/
     
 }
