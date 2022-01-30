@@ -24,6 +24,8 @@ public class Assign1 {
     private String algo;                // user inputted sort algorithm (selection, insertion, merge, quick)
     private String filename;            // user inputted file name that the sorted array is written to
     private int arr[];                  // array generated with random values input
+    private long startTime;             // Start time of beginning of sorting method (in nanoseconds)
+    private long elapsedTime;           // Elapssed time of the sorting method (in nanoseconds) 
     
     public static void main(String[] args) {
         Assign1 a1 = new Assign1();     // Object created to interact with static main
@@ -39,7 +41,12 @@ public class Assign1 {
         a1.fillRandom();                // Filling array with random integers
         a1.chooseAlgorithm();           // match the algorithm within a switch statement, to then call upon an appropriate sorting function
         a1.createFile();
+        a1.printTime();
                
+    }
+
+    public void printTime(){
+        System.out.println("The elapsed time of the " + order + " sorting algorithm is: " + elapsedTime + " nanoseconds.");
     }
 
     public void createFile(){
@@ -48,7 +55,7 @@ public class Assign1 {
             File f = new File(filename);
             if(f.createNewFile()){
                 System.out.println("File created:" + f.getName());
-                fileWrite(); 
+                fileWrite();
             } else
                 System.out.println("File already exists.");
 
@@ -83,18 +90,26 @@ public class Assign1 {
     public void chooseAlgorithm(){
         switch(algo){
             case "selection":
+                startTime = System.nanoTime();
                 selectionSort();
+                elapsedTime = System.nanoTime() - startTime;
                 break;
             case "insertion":
+                startTime = System.nanoTime();
                 insertionSort();
+                elapsedTime = System.nanoTime() - startTime;
                 break;
 
             case "merge":
+                startTime = System.nanoTime();
                 mergeSort();
+                elapsedTime = System.nanoTime() - startTime;
                 break;
 
             case "quick":
+                startTime = System.nanoTime();
                 quickSort();
+                elapsedTime = System.nanoTime() - startTime;
                 break;
 
             default:
@@ -133,6 +148,7 @@ public class Assign1 {
      * REQUIRES: N/A.
      */
     public void selectionSort(){
+
         int min;
         switch(order){
             case "ascending":
