@@ -28,7 +28,7 @@ public class Assign1 {
     private long startTime;             // Start time of beginning of sorting method (in nanoseconds)
     private long elapsedTime;           // Elapssed time of the sorting method (in nanoseconds) 
     
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
         Assign1 a1 = new Assign1();     // Object created to interact with static main
         
@@ -53,6 +53,12 @@ public class Assign1 {
                
     }
 
+
+    /**
+     * PROMISES: Depending on the order that was user-inputted, this method selects a case and filling method that either fills an empty array in random, 
+     *           ascending or descending order.
+     * REQUIRES: N/A.
+     */
     public void orderFill(){
         switch(order){
             case "ascending":
@@ -70,12 +76,22 @@ public class Assign1 {
                 break;
         }
     }
+
+    /**
+     * PROMISES: Fills an empty in ascending order. This is done by filling randomly at first, and then sorting it into ascending order.
+     * REQUIRES: N/A.
+     */
     public void fillAscending(){
         fillRandom();
         Arrays.sort(arr);
         
     }
 
+    /**
+     * PROMISES: Fills an empty array in descending order. This is done by filling randomly at first, and then converting the empty array 
+     * to use the Collections methods to sort, and reverse the order.
+     * REQUIRES: N/A.
+     */
     public void fillDescending(){
         
         fillRandom();
@@ -85,25 +101,6 @@ public class Assign1 {
         arr = list.stream().mapToInt(i->i).toArray();
     }
 
-    public static void reverse(int[] array)
-    {
-        // Length of the array
-        int n = array.length;
-  
-        // Swaping the first half elements with last half
-        // elements
-        for (int i = 0; i < n / 2; i++) {
-  
-            // Storing the first half elements temporarily
-            int temp = array[i];
-  
-            // Assigning the first half to the last half
-            array[i] = array[n - i - 1];
-  
-            // Assigning the last half to the first half
-            array[n - i - 1] = temp;
-        }
-    }
 
     /**
      * PROMISES: Filling an empty array that is arbitrarily sized with random integers..These integers are within the 0 to 100 boundary.
@@ -113,11 +110,18 @@ public class Assign1 {
         arr = new Random().ints().limit(size).toArray();
     }
 
-
+    /**
+     * PROMISES: Method call to print the elapsed time for a selected sorting algorithm.
+     * REQUIRES: N/A.
+     */
     public void printTime(){
         System.out.println("The elapsed time of the " + order + " sorting algorithm is: " + elapsedTime + " nanoseconds.");
     }
 
+    /**
+     * PROMISES: Creates a file named by the user. This also checks as to whether this file already exists or not, as well as checking for any incorrect inputs.
+     * REQUIRES: N/A.
+     */
     public void createFile(){
         try{
 
@@ -134,6 +138,10 @@ public class Assign1 {
         }
     }
 
+    /**
+     * PROMISES: Writes to the file created once the array has been sorted.
+     * REQUIRES: N/A.
+     */
     public void fileWrite(){
         try{
 
