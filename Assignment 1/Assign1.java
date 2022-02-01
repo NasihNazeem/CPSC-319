@@ -37,8 +37,11 @@ public class Assign1 {
             a1.size = Integer.parseInt(args[1]);
             a1.algo = args[2];
             a1.filename = args[3];
-        } catch (NegativeArraySizeException e) {
-            System.out.println("Illegal argument found. Aborting...");
+
+            if(a1.size < 0)
+                throw new IllegalArgumentException();
+        } catch( IllegalArgumentException er) {
+            System.out.println("Size must be a non-negative. Aborting...");
             System.exit(0);
         }
 
@@ -126,8 +129,8 @@ public class Assign1 {
                 System.out.println("File already exists.");
 
         } catch (IOException e) {
-            System.out.println("An error has occured.");
-            e.printStackTrace();
+            System.out.println("An error has occured. Aborting...");
+            System.exit(0);
         }
     }
 
