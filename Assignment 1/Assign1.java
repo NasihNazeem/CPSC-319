@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * 4) https://www.geeksforgeeks.org/insertion-sort/
  * 
  * Assignment No: 1
- * Authors: Nasih Nazeem, Nestor Chacin
+ * Author: Nasih Nazeem
  * Date: Jan 28, 2022
  */
 public class Assign1 {
@@ -199,7 +199,7 @@ public class Assign1 {
 
         int temp = array[left];
         array[left] = array[right];
-        array[right] = temp;
+            array[right] = temp;
 
     }
 
@@ -214,10 +214,8 @@ public class Assign1 {
         int min;
         for(int i = 0; i < arr.length - 1; i++){
             min = i;
-
             for(int j = i + 1; j < arr.length; j++) {
                 if(arr[j] < arr[min]) {
-
                     min = j;
                 }
             }
@@ -309,31 +307,6 @@ public class Assign1 {
         
     }
 
-    /**
-    /**
-     * PROMISES: Once mergeSort has completed the sorting of the two sub-arrays, this function merges both arrays into an descending order.
-     * REQUIRES: Main array, left sub-array, right sub-array, last index of left array, last index of right array.
-    
-    public void descendMerge(int arr[], int [] l, int [] r, int left, int right){
-
-        int i = 0, j = 0, k = 0;
-        while(i < left && j < right) {
-            if(l[i] >= r[j]) {
-                arr[k++] = l[i++];
-            }
-            else {
-                arr[k++] = r[j++];
-            }
-        }
-
-        while(i < left) {
-            arr[k++] = l[i++];
-        }
-        while(j < right) {
-            arr[k++] = r[j++];
-        }
-        
-    } 
 
     /**
      * PROMISES: Uses a pivotSort function that pivots on certain values in the array to sort as reference.
@@ -352,8 +325,15 @@ public class Assign1 {
         if(low < high){
             pi = ascendPartition(arr,low,high);
 
-            pivotSort(arr, low, pi-1);
-            pivotSort(arr, pi +1 , high);
+            if(pi - low <= high - (pi+1))
+            {
+                pivotSort(arr, low, pi-1);
+
+            }else{
+                pivotSort(arr, pi +1 , high);
+            }
+            
+            
             
         }
     }
@@ -381,27 +361,5 @@ public class Assign1 {
         return (i+1);
     }
 
-    /**
-     * PROMISES: Arranges the array using the pivot to sort in an descending order.
-     * REQUIRES: Main array, first index, last index.
-     
-    public int descendPartition(int [] arr, int low, int high) {
-        
-        int pivot = arr[high];
-
-        int i = (low - 1);
-
-        for(int j = low; j <= high - 1; j++) {
-
-            if(arr[j] > pivot)
-            {
-                i++;
-                swap(arr, i, j);
-            }
-        }
-
-        swap(arr, i+1, high);
-        return (i+1);
-    }*/
     
 }
