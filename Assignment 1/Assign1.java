@@ -82,9 +82,10 @@ public class Assign1 {
      * REQUIRES: N/A.
      */
     public void fillAscending(){
-        fillRandom();
-        Arrays.sort(arr);
-        
+        arr = new int [size];
+        for(int i = 1; i <= arr.length; i++){
+            arr[i-1] = i;
+        }        
     }
 
     /**
@@ -92,13 +93,11 @@ public class Assign1 {
      * to use the Collections methods to sort, and reverse the order.
      * REQUIRES: N/A.
      */
-    public void fillDescending(){
-        
-        fillRandom();
-        List<Integer> list = Arrays.stream(arr).boxed().collect(Collectors.toList());
-        Collections.sort(list);
-        Collections.reverse(list);
-        arr = list.stream().mapToInt(i->i).toArray();
+    public void fillDescending() {
+        arr = new int [size];
+        for(int i = arr.length; i > 0; i--){
+            arr[i-1] = i;
+        } 
     }
 
 
@@ -107,7 +106,7 @@ public class Assign1 {
      * REQUIRES: N/A.
      */
     public void fillRandom() {
-        arr = new Random().ints().limit(size).toArray();
+        arr = new Random().ints(0,Integer.MAX_VALUE).limit(size).toArray();
     }
 
     /**
@@ -187,7 +186,7 @@ public class Assign1 {
 
             case "quick":
                 startTime = System.nanoTime();
-                quickSort();
+                quickSort(arr, 0, arr.length - 1);
                 elapsedTime = System.nanoTime() - startTime;
                 break;
 
@@ -210,7 +209,7 @@ public class Assign1 {
 
         int temp = array[left];
         array[left] = array[right];
-            array[right] = temp;
+        array[right] = temp;
 
     }
 
@@ -222,11 +221,12 @@ public class Assign1 {
      */
     public void selectionSort(){
 
-        int min;
-        for(int i = 0; i < arr.length - 1; i++){
-            min = i;
-            for(int j = i + 1; j < arr.length; j++) {
-                if(arr[j] < arr[min]) {
+        int min;                                            // 0
+        for(int i = 0; i < arr.length - 1; i++){            // 1 + n + n - 1 = 2n
+            min = i;                                        // n - 1
+
+            for(int j = i + 1; j < arr.length; j++) {       // (n-1) + (x+1) + (x)
+                if(arr[j] < arr[min]) {                     // 
                     min = j;
                 }
             }
@@ -244,16 +244,15 @@ public class Assign1 {
      */
     public void insertionSort(){
 
-        for(int i = 1; i < arr.length; ++i){
-            int key = arr[i];
-            int j = i-1;
+        for(int i = 1; i < arr.length; ++i){        
+            int key = arr[i];                       
+            int j = i-1;                            
 
-
-            while( j >= 0 && arr[j] > key) {
-                arr[j+1] = arr[j];
-                j = j - 1;
+            while( j >= 0 && arr[j] > key) {         
+                arr[j+1] = arr[j];                  
+                j = j - 1;                          
             }
-            arr[j+1] = key;
+            arr[j+1] = key;                         
         }
     }
 
@@ -270,22 +269,22 @@ public class Assign1 {
      * REQUIRES: main array with random values, length of main array.
      */
     public void sort(int arr[], int length){
-        if(length < 2)
+        if(length < 2)                          // log n
             return;
 
-        int  mid = length/2;
-        int [] l = new int[mid];
-        int [] r = new int[length - mid];
+        int  mid = length/2;                    // 1
+        int [] l = new int[mid];                // 1
+        int [] r = new int[length - mid];       // 1
 
-        for(int i = 0; i < mid; i++){
-            l[i] = arr[i];
+        for(int i = 0; i < mid; i++){           // n + 1
+            l[i] = arr[i];                      // 1
         }
-        for(int i = mid; i < length; i++){
-            r[i - mid] = arr[i];
+        for(int i = mid; i < length; i++){      // n + 1
+            r[i - mid] = arr[i];                // 1
         }
 
-        sort(l, mid);
-        sort(r, length-mid);
+        sort(l, mid);                           // log n
+        sort(r, length-mid);                    // log n
 
         
         ascendMerge(arr, l, r, mid, length - mid);
@@ -320,32 +319,20 @@ public class Assign1 {
 
 
     /**
-     * PROMISES: Uses a pivotSort function that pivots on certain values in the array to sort as reference.
-     * REQUIRES: N/A.
-     */
-    public void quickSort(){
-        pivotSort(arr, 0, arr.length - 1);   
-    }
-
-    /**
      * PROMISES: Uses certain values in the array as a pivot/reference to compare the other elements in the array.
      * REQUIRES: Main array, first index, last index.
      */
-    public void pivotSort(int [] arr, int low, int high) {
-        int pi;
-        if(low < high){
-            pi = ascendPartition(arr,low,high);
-
-            if(pi - low <= high - (pi+1))
-            {
-                pivotSort(arr, low, pi-1);
-
-            }else{
-                pivotSort(arr, pi +1 , high);
-            }
-            
-            
-            
+    public void quickSort(int [] arr, int low, int high) {
+        if (low < high)
+        {
+            /* pi is partitioning index, arr[pi] is 
+              now at right place */
+            int pi = ascendPartition(arr, low, high);
+  
+            // Recursively sort elements before
+            // partition and after partition
+            quickSort(arr, low, pi-1);
+            quickSort(arr, pi+1, high);
         }
     }
 
@@ -354,22 +341,21 @@ public class Assign1 {
      * REQUIRES: Main array, first index, last index.
      */
     public int ascendPartition(int [] arr, int low, int high) {
-        
-        int pivot = arr[high];
-
-        int i = (low - 1);
-
-        for(int j = low; j <= high - 1; j++) {
-
-            if(arr[j] < pivot)
+        int pivot = arr[high]; 
+        int i = (low-1); // index of smaller element
+        for (int j=low; j<high; j++)
+        {
+            // If current element is smaller than or
+            // equal to pivot
+            if (arr[j] < pivot)
             {
                 i++;
+  
                 swap(arr, i, j);
             }
         }
-
-        swap(arr, i+1, high);
-        return (i+1);
+        swap(arr, i + 1, high);
+        return (i + 1);
     }
 
     
