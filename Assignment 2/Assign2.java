@@ -1,5 +1,11 @@
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.nio.Buffer;
+import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.Scanner;
 
@@ -191,6 +197,40 @@ class LinkedList{
         current = 0;
     }
 
+
+    public void quickSort(ArrayList test, int low, int high){
+        if(low < high)
+        {
+            int pi = partition(test, low, high);
+
+            quickSort(test, low, pi-1);
+            quickSort(test, pi+1, high);
+        }
+    }
+
+    public int partition(ArrayList test, int low, int high){
+
+        LinkedList pivot = test.get(high);
+        int i = low;
+
+        for(int j = low + 1; j < high; j++){
+            if((test.get(j).get(j).compareTo(pivot.get(j)) <= 0))
+            {
+                i++;
+                LinkedList temp = test.get(i);
+                test.push(test.get(j), i);
+                test.push(temp, j);
+
+            }
+        }
+
+        LinkedList temp = test.get(i + 1);
+        test.push(test.get(high), i+1);
+        test.push(temp, high);
+
+        return i + 1;
+    }
+
     public void push(LinkedList data)
     {
         if(current == capacity)
@@ -378,7 +418,37 @@ public class Assign2 {
 
     }
 
-    public static void main(String[] args) {
+    /**
+     * Quick Sort Implementation was not working, skipped this part of the assignment.
+     */
+    public void sortLists(){
+        list.quickSort(list, 0, list.size());
+    }
+
+    /**
+     * Outputs the ArrayList to a text file. Feel free to edit the address of the
+     * @param file
+     * @throws IOException
+     */
+    public void writeToFile(String file) throws IOException{
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+        
+        for(int i = 0; i < list.size(); i++){
+            for(int j = 0; j < list.get(i).size(); j++){
+                String content = list.get(i).get(j);
+
+                
+                writer.write(content + " ");
+                
+                
+            }
+            writer.write("\n");
+            writer.flush();
+        }
+        writer.close();
+    }
+
+    public static void main(String[] args) throws IOException {
         Assign2 a2 = new Assign2();
 
         a2.input = args[0];
@@ -387,7 +457,9 @@ public class Assign2 {
         a2.readFile(a2.input);
         a2.checkAnagram();
         a2.sortWords();
+        //a2.sortLists();
 
+        a2.writeToFile(a2.output);
 
     }
 
