@@ -221,20 +221,18 @@ public class Assign1 {
      */
     public void selectionSort(){
 
-        int min;                                            // 0
-        for(int i = 0; i < arr.length - 1; i++){            // 1 + n + n - 1 = 2n
-            min = i;                                        // n - 1
+        int min;                                            
+        for(int i = 0; i < arr.length - 1; i++){            
+            min = i;                                        
 
-            for(int j = i + 1; j < arr.length; j++) {       // (n-1) + (x+1) + (x)
-                if(arr[j] < arr[min]) {                     // 
+            for(int j = i + 1; j < arr.length; j++) {       
+                if(arr[j] < arr[min]) {                     
                     min = j;
                 }
             }
 
             swap(arr, min, i);
         }
-
-
     }
     
 
@@ -336,10 +334,7 @@ public class Assign1 {
         }
     }
 
-    /**
-     * PROMISES: Arranges the array using the pivot to sort in an ascending order.
-     * REQUIRES: Main array, first index, last index.
-     */
+
     public int ascendPartition(int [] arr, int low, int high) {
         int pivot = arr[high]; 
         int i = (low-1); // index of smaller element
@@ -350,7 +345,6 @@ public class Assign1 {
             if (arr[j] < pivot)
             {
                 i++;
-  
                 swap(arr, i, j);
             }
         }
@@ -360,3 +354,7 @@ public class Assign1 {
 
     
 }
+    /**
+     * PROMISES: Arranges the array using the pivot to sort in an ascending order.
+     * REQUIRES: Main array, first index, last index.
+     */
