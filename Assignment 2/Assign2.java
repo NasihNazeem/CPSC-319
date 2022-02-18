@@ -14,6 +14,7 @@ import java.util.Scanner;
 class LinkedList{
 
     private Node head;
+    private Node sorted;
 
     private static class Node{
         String data;
@@ -61,6 +62,59 @@ class LinkedList{
     public void deleteList(){
         head = null;
     }
+
+
+     // function to sort a singly linked list using insertion sort
+    public void insertionSort(LinkedList test)
+     {
+         // Initialize sorted linked list
+         sorted = null;
+         Node headref = test.head;
+         Node current = headref;
+         // Traverse the given linked list and insert every
+         // node to sorted
+         while (current != null)
+         {
+             // Store next for next iteration
+             Node next = current.next;
+             // insert current in sorted linked list
+             sortedInsert(current);
+             
+             // Update current
+             current = next;
+         }
+         // Update head_ref to point to sorted linked list
+         test.head = sorted;
+     }
+  
+     /*
+      * function to insert a new_node in a list. Note that
+      * this function expects a pointer to head_ref as this
+      * can modify the head of the input linked list
+      * (similar to push())
+      */
+     void sortedInsert(Node newnode)
+     {
+         /* Special case for the head end */
+         if (sorted == null || sorted.data.compareToIgnoreCase(newnode.data) >= 0)
+         {
+             newnode.next = sorted;
+             sorted = newnode;
+         }
+         else
+         {
+            Node current = sorted;
+             /* Locate the node before the point of insertion */
+             while (current.next != null && current.data.compareToIgnoreCase(newnode.data) < 0)
+             {
+                 current = current.next;
+             }
+             newnode.next = current.next;
+             current.next = newnode;
+         }
+     }
+
+
     //---------NODE INSERTION---------//
 
     public void add(String data){
@@ -271,7 +325,7 @@ public class Assign2 {
            
         }
 
-        list.print();
+        //list.print();
 
     }
 
@@ -289,7 +343,6 @@ public class Assign2 {
         for(int i = 0; i < newIndex.size(); i++){
             newTemp.add(newIndex.get(i));
         }
-        //newTemp.printList();
         list.push(newTemp);
         
     }
@@ -313,6 +366,18 @@ public class Assign2 {
             }
     }
     
+    public void sortWords(){
+
+        for(int i = 0; i < list.size(); i++){
+
+            raw.insertionSort(list.get(i));
+
+        }
+
+        list.print();
+
+    }
+
     public static void main(String[] args) {
         Assign2 a2 = new Assign2();
 
@@ -321,6 +386,7 @@ public class Assign2 {
         
         a2.readFile(a2.input);
         a2.checkAnagram();
+        a2.sortWords();
 
 
     }
