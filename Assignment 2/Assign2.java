@@ -3,17 +3,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.nio.Buffer;
-import java.nio.file.Path;
-import java.util.Iterator;
 import java.util.Scanner;
 
 /**
  * 
  * 
  * 
- * Assignment No: 1
+ * Assignment No: 2
  * Author: Nasih Nazeem
  * Date: Jan 28, 2022
  */
@@ -29,22 +25,6 @@ class LinkedList{
         Node(String data){
             this.data = data;
             next = null;
-        }
-
-        public String getData() {
-            return data;
-        }
-    
-        public void setData(String data) {
-            this.data = data;
-        }
-    
-        public Node getNextNode() {
-            return next;
-        }
-    
-        public void setNextNode(Node nextNode) {
-            this.next = nextNode;
         }
         
     }
@@ -183,7 +163,9 @@ class LinkedList{
     
 }
 
-
+/**
+ * Class created to be known as the reference to all LinkedLists.
+ */
  class ArrayList {
     
     private LinkedList arr[];
@@ -198,6 +180,12 @@ class LinkedList{
     }
 
 
+    /**
+     * Was not used due to the mistakes in the Quick Sort Implementation.
+     * @param test
+     * @param low
+     * @param high
+     */
     public void quickSort(ArrayList test, int low, int high){
         if(low < high)
         {
@@ -208,6 +196,13 @@ class LinkedList{
         }
     }
 
+    /**
+     * Was not used due to the mistakes in the Quick Sort.
+     * @param test
+     * @param low
+     * @param high
+     * @return
+     */
     public int partition(ArrayList test, int low, int high){
 
         LinkedList pivot = test.get(high);
@@ -295,13 +290,18 @@ class LinkedList{
 
 public class Assign2 {
     
-    private String input;
-    private String output;
-    ArrayList list = new ArrayList();
-    LinkedList raw = new LinkedList();
-    LinkedList temp = new LinkedList();
-    LinkedList verified = new LinkedList();
+    private String input;                       // input file
+    private String output;                      // output file
+    ArrayList list = new ArrayList();           // ArrayList was the reference to all the LinkedLists
+    LinkedList raw = new LinkedList();          // Used as the initial RAW strings that were taken in from the input file.
+    LinkedList temp = new LinkedList();         // Used during the sorting algorithms, checking of anagrams
+    LinkedList verified = new LinkedList();     // Used to verify anagrams and to permanently place them onto the ArrayList.
 
+    /**
+     * Method's main function is to sort alphabetically in ascending order.
+     * @param str
+     * @return
+     */
     public String sortAlpha(String str){
 
         char charArray[] = str.toCharArray();
@@ -314,21 +314,30 @@ public class Assign2 {
         }
 
         str = String.valueOf(charArray);
-        //System.out.println(str);
+
         return str;
     }
 
+    /**
+     * Swapping of chars for the letters sorting in alphabetically ascending order.
+     * @param i
+     * @param j
+     * @param charArray
+     */
     private static void swapChars(int i, int j, char[] charArray) {
         char temp = charArray[i];
         charArray[i] = charArray[j];
         charArray[j] = temp;
     }
 
+    /**
+     * Checks for Anagrams in the Raw LinkedList, removes verified anagram words and adds that to the ArrayList of LinkedLists.
+     */
     public void checkAnagram(){
 
         String str;
         String str1;
-        //raw.printList();
+
         boolean status = false;
 
         for(int i = 0; i < raw.size(); i++){
@@ -355,7 +364,7 @@ public class Assign2 {
                         }
                     }
                 }
-                //verified.printList();
+
                 createList(temp);
             }
             
@@ -365,10 +374,12 @@ public class Assign2 {
            
         }
 
-        //list.print();
-
     }
 
+    /**
+     * Removes words that has already been accounted for.
+     * 
+     */
     public void verifyComplete(){
 
         for(int i = 0; i < temp.size(); i++){
@@ -377,6 +388,11 @@ public class Assign2 {
         }
 
     }
+
+    /**
+     * Used to create the ArrayList once sorting alphabetically and finding the anagrams
+     * @param newIndex
+     */
     public void createList(LinkedList newIndex){
         LinkedList newTemp = new LinkedList();
 
@@ -387,6 +403,10 @@ public class Assign2 {
         
     }
     
+    /**
+     * Reads the input file and adds it to a RAW LinkedList
+     * @param inputFile
+     */
     public void readFile(String inputFile){
         try {
                 
@@ -405,7 +425,9 @@ public class Assign2 {
             e.printStackTrace();
             }
     }
-    
+    /**
+     * Insertion Sort for each LinkedList in the ArrayList
+     */
     public void sortWords(){
 
         for(int i = 0; i < list.size(); i++){
