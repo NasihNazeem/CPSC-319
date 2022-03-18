@@ -22,8 +22,9 @@ public class BinarySearchTree {
     private String year;
     public Node root;
     private String dpthFile;
-    private PrintWriter  output1;
-
+    private String brdthFile;
+    private PrintWriter output1;
+    private PrintWriter output2;
 
     static class Node {
         public String data;
@@ -116,16 +117,23 @@ public class BinarySearchTree {
     public void inOrder(Node node) throws IOException {
         if(node != null) {
             inOrder(node.left);
-            System.out.println(node.data);
-            writeToFile(node.data);
+            //System.out.println(node.data);
+            writetoDpthFile(node.data);
             inOrder(node.right);
         }
     }
 
-    private void writeToFile(String data) throws IOException {
+    private void writetoDpthFile(String data) throws IOException {
         output1 = new PrintWriter (new BufferedWriter(new FileWriter(dpthFile, true)));
         output1.println(data);
         output1.flush();
+
+    }
+
+    private void writetoBrdthFile(String data) throws IOException {
+        output2 = new PrintWriter (new BufferedWriter(new FileWriter(brdthFile, true)));
+        output2.println(data);
+        output2.flush();
 
     }
 
@@ -141,12 +149,40 @@ public class BinarySearchTree {
         }
     }
 
+    public void breadthFirst() throws IOException {
+        int h = treeHeight(root);
+        for (int i = 0; i < h; i++) {
+            breadthFirstTraversal(root, i);
+        }
+    }
+
+    public void breadthFirstTraversal(Node node, int level) throws IOException {
+        if (node == null) {
+            return;
+        }
+
+        if (level == 0) {
+            writetoBrdthFile(node.data);
+        } else {
+            breadthFirstTraversal(node.left, level - 1);
+            breadthFirstTraversal(node.right, level - 1);
+        }
+    }
+
+    public int treeHeight(Node root) {
+        if (root == null) {
+            return 0;
+        }
+        int leftHeight = treeHeight(root.left);
+        int rightHeight = treeHeight(root.right);
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+
     public static void main(String[] args) throws Exception {
         File file = new File(args[0]);
         BufferedReader br = new BufferedReader(new FileReader(file));
         tree.dpthFile = args[1];
-        ArrayList<String> names = new ArrayList<>();
-
+        tree.brdthFile = args[2];
 
         String st;
         
@@ -159,7 +195,6 @@ public class BinarySearchTree {
         tree.dept = st.substring(33, 37);
         tree.prgm = st.substring(37, 40);
         tree.year = st.substring(41);
-        names.add(tree.name);
 
 
         tree.readOperation();
@@ -174,9 +209,14 @@ public class BinarySearchTree {
         
         }
 
-        //DEPTH FIRST PRINTING
+        //DEPTH FIRST
         tree.inOrder(tree.root);
+        
+        //BREADTH FIRST 
+        tree.breadthFirst();
+        
         tree.output1.close();
+        tree.output2.close();
         br.close();
 
         
@@ -188,31 +228,3 @@ public class BinarySearchTree {
     
 }
 
-// public void breadthFirst() {
-    //     int h = treeHeight(root);
-    //     for (int i = 0; i < h; i++) {
-    //         breadthFirstTraversal(root, i);
-    //     }
-    // }
-
-    // public void breadthFirstTraversal(Node node, int level) {
-    //     if (node == null) {
-    //         return;
-    //     }
-
-    //     if (level == 0) {
-    //         System.out.println(node.data + " ");
-    //     } else {
-    //         breadthFirstTraversal(node.left, level - 1);
-    //         breadthFirstTraversal(node.right, level - 1);
-    //     }
-    // }
-
-    // public int treeHeight(Node root) {
-    //     if (root == null) {
-    //         return 0;
-    //     }
-    //     int leftHeight = treeHeight(root.left);
-    //     int rightHeight = treeHeight(root.right);
-    //     return Math.max(leftHeight, rightHeight) + 1;
-    // }
