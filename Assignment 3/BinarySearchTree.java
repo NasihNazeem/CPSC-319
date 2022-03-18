@@ -325,6 +325,10 @@ public class BinarySearchTree {
 
     public static void main(String[] args) throws IOException {
 
+
+        if(!(args[0].contains(".txt") || args[1].contains(".txt") || args[2].contains(".txt")))
+            System.out.println("Please enter .txt as well as the file name.");
+
         File file = new File(args[0]);
         tree.dpthFile = args[1];
         tree.brdthFile = args[2];
@@ -355,7 +359,8 @@ public class BinarySearchTree {
             }
         } catch (IOException e) {
             System.out.println("Something went wrong.");
-            e.printStackTrace();
+        } catch(NullPointerException e1) {
+            System.out.println("Something went wrong.");
         }
 
         //DEPTH FIRST
