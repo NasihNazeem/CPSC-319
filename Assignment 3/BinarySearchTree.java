@@ -1,6 +1,10 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -17,6 +21,8 @@ public class BinarySearchTree {
     private String prgm;
     private String year;
     public Node root;
+    private String dpthFile;
+    private PrintWriter  output1;
 
 
     static class Node {
@@ -97,30 +103,30 @@ public class BinarySearchTree {
         }
     }
     
-    // public void printTree(Node node)
-    // {
-        
-    //     if(node == null) return;
-    //     System.out.println(node.data);
-    //     printTree(node.left);
-    //     printTree(node.right);
-    // }
-
 
     /**
      * These two functions are meant for Depth-First In-Order Traversal.
+     * @throws IOException
      * 
      */
-    public void inOrder() {
+    public void inOrder() throws IOException {
         inOrder(root);
     }
 
-    public void inOrder(Node node) {
+    public void inOrder(Node node) throws IOException {
         if(node != null) {
             inOrder(node.left);
             System.out.println(node.data);
+            writeToFile(node.data);
             inOrder(node.right);
         }
+    }
+
+    private void writeToFile(String data) throws IOException {
+        output1 = new PrintWriter (new BufferedWriter(new FileWriter(dpthFile, true)));
+        output1.println(data);
+        output1.flush();
+
     }
 
     private void readOperation() {
@@ -138,6 +144,7 @@ public class BinarySearchTree {
     public static void main(String[] args) throws Exception {
         File file = new File(args[0]);
         BufferedReader br = new BufferedReader(new FileReader(file));
+        tree.dpthFile = args[1];
         ArrayList<String> names = new ArrayList<>();
 
 
@@ -169,6 +176,11 @@ public class BinarySearchTree {
 
         //DEPTH FIRST PRINTING
         tree.inOrder(tree.root);
+        tree.output1.close();
+        br.close();
+
+        
+
         //System.out.println(names);
     }
 
