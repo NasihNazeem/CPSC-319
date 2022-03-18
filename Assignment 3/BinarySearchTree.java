@@ -326,8 +326,10 @@ public class BinarySearchTree {
     public static void main(String[] args) throws IOException {
 
 
-        if(!(args[0].contains(".txt") || args[1].contains(".txt") || args[2].contains(".txt")))
+        if(!(args[0].contains(".txt")))
             System.out.println("Please enter .txt as well as the file name.");
+        
+        
 
         File file = new File(args[0]);
         tree.dpthFile = args[1];
@@ -364,15 +366,25 @@ public class BinarySearchTree {
         }
 
         //DEPTH FIRST
-        tree.inOrder(tree.root);
+        if (!args[1].contains(".txt"))
+            System.out.println("Please enter .txt as well as the file name for output1.");
+        else
+            tree.inOrder(tree.root);
         
         //BREADTH FIRST 
-        tree.breadthFirst();
+        if (!args[2].contains(".txt"))
+            System.out.println("Please enter .txt as well as the file name for output2.");
+        else 
+            tree.breadthFirst();
         
         // CLOSE ALL BUFFEREDREADER AND FILEWRITER OBJECTS
-        tree.output1.close();
-        tree.output2.close();
-        tree.br.close();
+        try{
+            tree.output1.close();
+            tree.output2.close();
+            tree.br.close();
+        } catch (Exception e){
+            System.out.println("Cannot close filereader/writer!");
+        }
 
         
 
