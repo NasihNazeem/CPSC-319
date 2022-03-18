@@ -6,15 +6,18 @@
 839900  	 Doyle                     	 0334 	 ENT  	 1
 850888  	 Fisher                    	 0341 	 TXT  	 1
 840091  	 Green                     	 0045 	 RFM  	 1
+848843  	 Hall                      	 0341 	 RST  	 1
 832218  	 Hopper                    	 0251 	 CT   	 1
 842291  	 Johnston                  	 0341 	 RST  	 1
 830670  	 Jones                     	 0251 	 CT   	 2
 839912  	 Jordan                    	 0334 	 ENT  	 1
 840034  	 LaPorte                   	 0045 	 JA   	 1
 830050  	 Last                      	 0251 	 CT   	 1
+853453  	 McKay                     	 0251 	 CT   	 1
 832288  	 Morrison                  	 0045 	 JA   	 3
 832218  	 Newman                    	 0251 	 CT   	 2
 841209  	 Phillips                  	 0251 	 EST  	 1
+821239  	 Schafer                   	 0251 	 EST  	 1
 840000  	 Smith                     	 0251 	 CT   	 2
 825599  	 Sykes                     	 0451 	 WET  	 2
 830000  	 Walker                    	 0341 	 TXT  	 1
@@ -22,5 +25,7 @@
 840000  	 Watson                    	 0334 	 ENT  	 2
 850006  	 Watts                     	 0341 	 RST  	 1
 850000  	 West                      	 0334 	 ENT  	 1
+830123  	 Weston                    	 0334 	 ENT  	 2
 836709  	 White                     	 0341 	 TXT  	 1
 838823  	 Woods                     	 0251 	 CT   	 1
+859999  	 Zot                       	 0451 	 WET  	 1

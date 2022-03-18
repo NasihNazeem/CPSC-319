@@ -10,7 +10,9 @@ import java.io.PrintWriter;
 
 
 /**
- * BinarySearchTree
+ * Assignment No: 3
+ * Author: Nasih Nazeem
+ * Date: March 18, 2022
  */
 public class BinarySearchTree {
 
@@ -25,6 +27,11 @@ public class BinarySearchTree {
     private PrintWriter output2;
     private BufferedReader br;
 
+    /**
+     * Created a Student class to hold record of ID, Department, 
+     * Program and Year so it is easily accessible when writing 
+     * to output text files.
+     */
     static class Student {
         private char operation;
         private String id;
@@ -64,6 +71,13 @@ public class BinarySearchTree {
         this.root = null;
     }
 
+    /**
+     * 
+     * PROMISES: These next two functions allow for the insertion 
+     *           of a node that holds the last name of a student.
+     * REQUIRES: Student Last Name
+     * @param newData
+     */
     public void insert(String newData){
         this.root = insert(root, newData);
     }
@@ -85,6 +99,12 @@ public class BinarySearchTree {
         return root;
     }
 
+    /**
+     * PROMISES: Finds the minimum element to replace the deleted node.
+     * REQUIRES: Root Node
+     * @param root
+     * @return mins
+     */
     public static String minimumElement(Node root) {
         String mins = root.data;
         while(root.left != null){
@@ -95,6 +115,12 @@ public class BinarySearchTree {
         return mins;
     }
 
+    /**
+     * PROMISES: Removes the requested node from the binary 
+     *           search tree, as well as balancing the tree again.
+     * REQUIRES: Key data for respective node
+     * @param newData
+     */
     public void deleteNode(String newData){
         this.root = deleteNode(root, newData);
     }
@@ -140,6 +166,13 @@ public class BinarySearchTree {
         }
     }
 
+    /**
+     * PROMISES: Writes to the first output file, which traverses 
+     *           through the search tree in Depth-First In-Order.
+     * REQUIRES: Data to write to file
+     * @param data
+     * @throws IOException
+     */
     private void writetoDpthFile(String data) throws IOException {
         try{
             String id = "",dept = "",prgm = "",year = "";
@@ -165,6 +198,13 @@ public class BinarySearchTree {
 
     }
 
+    /**
+     * PROMISES: Writes to the first output file, which traverses through
+     *           the search tree in Breadth-First.
+     * REQUIRES: Data to write to file
+     * @param data
+     * @throws IOException
+     */
     private void writetoBrdthFile(String data) throws IOException {
         try{
         String id = "",dept = "",prgm = "",year = "";
@@ -187,6 +227,12 @@ public class BinarySearchTree {
         }
     }
 
+    /**
+     * PROMISES: Reads the first char of each new line on the input file,
+     *           to figure out whether the requested operation is an insertion
+     *           or a deletion
+     * REQUIRES: Nothing requried.
+     */
     private void readOperation() {
         switch(student.operation){
             case 'I':
@@ -196,10 +242,17 @@ public class BinarySearchTree {
                 deleteNode(student.name);
                 break;
             default:
+                System.out.println("No operation code found.");
                 break;
         }
     }
 
+    /**
+     * PROMISES: Traversal in Breadth-First mode. Finds current height of tree
+     *           and visits every node from top to bottom of the tree.
+     * REQUIRES: Nothing required.
+     * @throws IOException
+     */
     public void breadthFirst() throws IOException {
         int h = treeHeight(root);
         for (int i = 0; i < h; i++) {
@@ -207,6 +260,14 @@ public class BinarySearchTree {
         }
     }
 
+    /**
+     * PROMISES: Recursive function that visits all nodes by level of the tree 
+     *           from top-to-bottom.
+     * REQUIRES: Current node, current level
+     * @param node
+     * @param level
+     * @throws IOException
+     */
     public void breadthFirstTraversal(Node node, int level) throws IOException {
         if (node == null) {
             return;
@@ -220,6 +281,13 @@ public class BinarySearchTree {
         }
     }
 
+    /**
+     * PROMISES: Figures out the height of the tree by 
+     *           referencing the root node.
+     * REQUIRES: Root node required.
+     * @param root
+     * @return
+     */
     public int treeHeight(Node root) {
         if (root == null) {
             return 0;
@@ -229,6 +297,12 @@ public class BinarySearchTree {
         return Math.max(leftHeight, rightHeight) + 1;
     }
 
+    /**
+     * PROMISES: Returns the amount of lines in the file being read.
+     * REQUIRES: File name required.
+     * @param fileName
+     * @return
+     */
     public static int countLineNumberReader(String fileName) {
 
         File file = new File(fileName);
@@ -252,7 +326,11 @@ public class BinarySearchTree {
     public static void main(String[] args) throws IOException {
 
         File file = new File(args[0]);
-        
+        tree.dpthFile = args[1];
+        tree.brdthFile = args[2];
+        String st;
+
+
         try {
             tree.br = new BufferedReader(new FileReader(file));
         } catch (FileNotFoundException e) {
@@ -260,20 +338,14 @@ public class BinarySearchTree {
             e.printStackTrace();
         }
 
-        tree.dpthFile = args[1];
-        tree.brdthFile = args[2];
-
         
 
-        String st;
-
         int lines = countLineNumberReader(args[0]), i = 0;
-        String [] content = new String[lines];
         students = new Student[lines];
 
+        // POPULATING STUDENT ARRAY
         try {
             while((st = tree.br.readLine()) != null){
-            content[i] = st;
             student = new Student(st);
             students[i] = student;
 
@@ -292,6 +364,7 @@ public class BinarySearchTree {
         //BREADTH FIRST 
         tree.breadthFirst();
         
+        // CLOSE ALL BUFFEREDREADER AND FILEWRITER OBJECTS
         tree.output1.close();
         tree.output2.close();
         tree.br.close();
