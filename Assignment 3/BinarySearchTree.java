@@ -67,31 +67,49 @@ public class BinarySearchTree {
         return root;
     }
 
-    public void deleteNode(Node node){
-        deleteNode(this.root, node);
+    public static Node minimumElement(Node root) {
+        if (root.left == null)
+            return root;
+        else {
+            return minimumElement(root.left);
+        }
     }
 
-    private Node deleteNode(Node root2, Node node) {
-        if(root == null){
-            System.out.println("There are no nodes to delete.");
+    public void deleteNode(String newData){
+        this.root = deleteNode(root, newData);
+    }
+
+    public static Node deleteNode(Node root, String value) {
+        if (root == null)
             return null;
-        } else if (node.data.compareTo(root.data) < 0){
-            root.left = deleteNode(root.left,node);
-        } else if (node.data.compareTo(root.data) > 0){
-            root.right = deleteNode(root.right, node);
-        } else if (root.data.equals(node.data)){
-            
-            if(root.left != null && root.right != null) {
-                String lmax = findMaxData(root.left);
-                root.data = lmax;
-                root.left = deleteNode(root.left, new Node(lmax));
-                return root;
-            } else if (root.left != null) {
-                return root.left;
-            } else if (root.right != null) {
-                return root.right;
-            } else
-                return null;
+        if (root.data.compareTo(value) >= 0) {
+            root.left = deleteNode(root.left, value);
+        } else if (root.data.compareTo(value) < 0) {
+            root.right = deleteNode(root.right, value);
+ 
+        } else {
+            // if nodeToBeDeleted have both children
+            if (root.left != null && root.right != null) {
+                Node temp = root;
+                // Finding minimum element from right
+                Node minNodeForRight = minimumElement(temp.right);
+                // Replacing current node with minimum node from right subtree
+                root.data = minNodeForRight.data;
+                // Deleting minimum node from right now
+                root.right = deleteNode(root.right, minNodeForRight.data);
+ 
+            }
+            // if nodeToBeDeleted has only left child
+            else if (root.left != null) {
+                root = root.left;
+            }
+            // if nodeToBeDeleted has only right child
+            else if (root.right != null) {
+                root = root.right;
+            }
+            // if nodeToBeDeleted do not have child (Leaf node)
+            else
+                root = null;
         }
         return root;
     }
@@ -143,6 +161,7 @@ public class BinarySearchTree {
                 insert(name);
                 break;
             case 'D':
+                deleteNode(name);
                 break;
             default:
                 break;
