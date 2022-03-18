@@ -329,8 +329,6 @@ public class BinarySearchTree {
         if(!(args[0].contains(".txt")))
             System.out.println("Please enter .txt as well as the file name.");
         
-        
-
         File file = new File(args[0]);
         tree.dpthFile = args[1];
         tree.brdthFile = args[2];
