@@ -1,12 +1,13 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.LineNumberReader;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Scanner;
+
 
 /**
  * BinarySearchTree
@@ -14,17 +15,34 @@ import java.util.Scanner;
 public class BinarySearchTree {
 
     private static BinarySearchTree tree = new BinarySearchTree();
-    private char operation;
-    private String id;
-    private String name;
-    private String dept;
-    private String prgm;
-    private String year;
+    private static Student [] students;
+    private static Student student;
     public Node root;
+    
     private String dpthFile;
     private String brdthFile;
     private PrintWriter output1;
     private PrintWriter output2;
+    private BufferedReader br;
+
+    static class Student {
+        private char operation;
+        private String id;
+        private String name;
+        private String dept;
+        private String prgm;
+        private String year;
+
+        public Student(String content){
+            this.operation = content.charAt(0);
+            this.id = content.substring(1,7);
+            this.name = content.substring(8,32).replaceAll("\\s+", "");
+            this.dept = content.substring(33, 37);
+            this.prgm = content.substring(37, 40);
+            this.year = content.substring(41);
+        }
+        
+    }
 
     static class Node {
         public String data;
@@ -67,12 +85,14 @@ public class BinarySearchTree {
         return root;
     }
 
-    public static Node minimumElement(Node root) {
-        if (root.left == null)
-            return root;
-        else {
-            return minimumElement(root.left);
+    public static String minimumElement(Node root) {
+        String mins = root.data;
+        while(root.left != null){
+            mins = root.left.data;
+            root = root.left;
         }
+
+        return mins;
     }
 
     public void deleteNode(String newData){
@@ -82,45 +102,24 @@ public class BinarySearchTree {
     public static Node deleteNode(Node root, String value) {
         if (root == null)
             return null;
-        if (root.data.compareTo(value) >= 0) {
+        if (root.data.compareTo(value) > 0) {
             root.left = deleteNode(root.left, value);
         } else if (root.data.compareTo(value) < 0) {
             root.right = deleteNode(root.right, value);
  
         } else {
-            // if nodeToBeDeleted have both children
-            if (root.left != null && root.right != null) {
-                Node temp = root;
-                // Finding minimum element from right
-                Node minNodeForRight = minimumElement(temp.right);
-                // Replacing current node with minimum node from right subtree
-                root.data = minNodeForRight.data;
-                // Deleting minimum node from right now
-                root.right = deleteNode(root.right, minNodeForRight.data);
- 
-            }
-            // if nodeToBeDeleted has only left child
-            else if (root.left != null) {
-                root = root.left;
-            }
-            // if nodeToBeDeleted has only right child
-            else if (root.right != null) {
-                root = root.right;
-            }
-            // if nodeToBeDeleted do not have child (Leaf node)
-            else
-                root = null;
+            if(root.left == null){
+                return root.right;
+            } else if (root.right == null)
+                return root.left;
+
+            root.data = minimumElement(root.right);
+
+            root.right = deleteNode(root.right, root.data);
         }
         return root;
     }
 
-    public String findMaxData(Node root) {
-        if(root.right != null){
-            return findMaxData(root.right);
-        } else {
-            return root.data;
-        }
-    }
     
 
     /**
@@ -142,26 +141,59 @@ public class BinarySearchTree {
     }
 
     private void writetoDpthFile(String data) throws IOException {
-        output1 = new PrintWriter (new BufferedWriter(new FileWriter(dpthFile, true)));
-        output1.println(data);
-        output1.flush();
+        try{
+            String id = "",dept = "",prgm = "",year = "";
+    
+            for(int i = 0; i < students.length;i++){
+                if(data.equals(students[i].name)) {
+                    id = students[i].id;
+                    dept = students[i].dept;
+                    prgm = students[i].prgm;
+                    year = students[i].year;
+                }
+            }
+            
+            output1 = new PrintWriter (new BufferedWriter(new FileWriter(dpthFile, true)));
+            output1.println(String.format("%-7s \t %-25s \t %-4s \t %-4s \t %-1s", id, data, dept, prgm, year));
+            output1.flush();
+            }
+            catch (IOException e){
+                System.out.println("Something went wrong.");
+            }
+        
+        
 
     }
 
     private void writetoBrdthFile(String data) throws IOException {
-        output2 = new PrintWriter (new BufferedWriter(new FileWriter(brdthFile, true)));
-        output2.println(data);
-        output2.flush();
+        try{
+        String id = "",dept = "",prgm = "",year = "";
 
+        for(int i = 0; i < students.length;i++){
+            if(data.equals(students[i].name)) {
+                id = students[i].id;
+                dept = students[i].dept;
+                prgm = students[i].prgm;
+                year = students[i].year;
+            }
+        }
+        
+        output2 = new PrintWriter (new BufferedWriter(new FileWriter(brdthFile, true)));
+        output2.println(String.format("%-7s \t %-25s \t %-4s \t %-4s \t %-1s", id, data, dept, prgm, year));
+        output2.flush();
+        }
+        catch (IOException e){
+            System.out.println("Something went wrong.");
+        }
     }
 
     private void readOperation() {
-        switch(operation){
+        switch(student.operation){
             case 'I':
-                insert(name);
+                insert(student.name);
                 break;
             case 'D':
-                deleteNode(name);
+                deleteNode(student.name);
                 break;
             default:
                 break;
@@ -197,35 +229,61 @@ public class BinarySearchTree {
         return Math.max(leftHeight, rightHeight) + 1;
     }
 
-    public static void main(String[] args) throws Exception {
+    public static int countLineNumberReader(String fileName) {
+
+        File file = new File(fileName);
+  
+        int lines = 0;
+  
+        try (LineNumberReader lnr = new LineNumberReader(new FileReader(file))) {
+  
+            while (lnr.readLine() != null) ;
+  
+            lines = lnr.getLineNumber();
+  
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+  
+        return lines;
+  
+    }
+
+    public static void main(String[] args) throws IOException {
+
         File file = new File(args[0]);
-        BufferedReader br = new BufferedReader(new FileReader(file));
+        
+        try {
+            tree.br = new BufferedReader(new FileReader(file));
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found.");
+            e.printStackTrace();
+        }
+
         tree.dpthFile = args[1];
         tree.brdthFile = args[2];
 
+        
+
         String st;
-        
 
-        while((st = br.readLine()) != null){
+        int lines = countLineNumberReader(args[0]), i = 0;
+        String [] content = new String[lines];
+        students = new Student[lines];
 
-        tree.operation = st.charAt(0);
-        tree.id = st.substring(1,7);
-        tree.name = st.substring(8,32).replaceAll("\\s+", "");
-        tree.dept = st.substring(33, 37);
-        tree.prgm = st.substring(37, 40);
-        tree.year = st.substring(41);
+        try {
+            while((st = tree.br.readLine()) != null){
+            content[i] = st;
+            student = new Student(st);
+            students[i] = student;
 
 
-        tree.readOperation();
-        
-        // System.out.println(tree.operation);
-        // System.out.println(tree.id);
-        // System.out.println(tree.name);
-        // System.out.println(tree.dept);
-        // System.out.println(tree.prgm);
-        // System.out.println(tree.year);
-        
-        
+            tree.readOperation();
+            i++;
+            }
+        } catch (IOException e) {
+            System.out.println("Something went wrong.");
+            e.printStackTrace();
         }
 
         //DEPTH FIRST
@@ -236,11 +294,11 @@ public class BinarySearchTree {
         
         tree.output1.close();
         tree.output2.close();
-        br.close();
+        tree.br.close();
 
         
 
-        //System.out.println(names);
+
     }
 
     
