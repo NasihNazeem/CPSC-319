@@ -1,0 +1,92 @@
+Goes to 1: 
+5,7,9
+
+Goes to 2:
+1,6
+
+Goes to 3:
+2,10
+
+Goes to 4:
+2,3
+
+Goes to 5:
+3,4,7,8,31
+
+Goes to 6:
+5,7,8
+
+Goes to 7:
+1,6
+
+Goes to 8:
+1,2,4
+
+Goes to 9:
+2
+
+Goes to 10:
+11,16,29
+
+Goes to 11:
+15
+
+Goes to 12:
+9,11,16
+
+Goes to 13:
+16
+
+Goes to 14:
+17,19
+
+Goes to 15:
+4,10,13,14
+
+Goes to 16:
+1,2,14
+
+Goes to 17:
+None
+
+Goes to 18:
+17
+
+Goes to 19:
+13,14,15
+
+Goes to 20:
+19,25
+
+Goes to 21:
+18,22
+
+Goes to 22:
+18
+
+Goes to 23:
+22
+
+Goes to 24:
+23
+
+Goes to 25:
+30
+
+Goes to 26:
+23
+
+Goes to 27:
+28
+
+Goes to 28:
+17,23
+
+Goes to 29:
+8,10,20
+
+Goes to 30:
+15,29
+
+Goes to 31:
+None
