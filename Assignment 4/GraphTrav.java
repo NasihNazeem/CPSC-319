@@ -46,31 +46,26 @@ public class GraphTrav {
     }
 
     
-
+    /**
+     * PROMISES: Creates an edge between two vertices
+     * REQUIRES: Two vertices
+     * @param data
+     * 
+     */
     public void addEdges(int v, int v2){
         adjList[v].add(v2);
     }
 
+    /**
+     * PROMISES: Traversal through each vertex using DFS Traversal
+     * REQUIRES: Starting Node, Ending Node, and Visited boolean
+     * @param data
+     * @throws IOException
+     */
     public void DFSVisit(int v, boolean visited[], int e) throws IOException{
         visited[v] = true;
         path += v + ", ";
 
-        // Iterator<Integer> i = adjList[v].iterator();
-        // while(i.hasNext()){
-        //     int n = i.next();
-            
-        //     if(!visited[n]){
-
-        //         if(n == e){
-        //             path += n;
-        //             //System.out.println("I WANT TO LEAVE");
-        //             break;
-        //         }
-        //         //System.out.println("I AM STUCK");
-
-        //         DFSVisit(n, visited, e);
-        //     }
-        // }
 
         for(Integer k : adjList[v]){
             if(!visited[k]){                
@@ -87,6 +82,12 @@ public class GraphTrav {
         }
     }
 
+    /**
+     * PROMISES: Begins the DFS Traversal. Clears boolean array.
+     * REQUIRES: Starting vertex, ending vertex
+     * @param data
+     * @throws IOException
+     */
     public void DFS(int v, int e) throws IOException{
         boolean visited[] = new boolean[vertices];
         graph.path = "";
@@ -94,6 +95,9 @@ public class GraphTrav {
         DFSVisit(v, visited, e);
     }
 
+    /**
+     * Created a manual LinkedList class to create a Adjacency List Representation because I thought it may be easier.
+     */
     static class LinkedList<T> implements Iterable<T>{
         Node<T> head, tail;
 
@@ -186,6 +190,12 @@ public class GraphTrav {
 
     }
 
+    /**
+     * PROMISES: Reads an edge between two vertices
+     * REQUIRES: One vertex, and one String
+     * @param data
+     * 
+     */
     public void readEdges(String content, int key){
         String[] str = new String[content.length()];
         str = content.split("\t");
@@ -223,6 +233,12 @@ public class GraphTrav {
   
     }
 
+    /**
+     * PROMISES: Finds out how many columns are in a file
+     * REQUIRES: File Name
+     * @param data
+     * 
+     */
     public static int getFileColumnsNumber(String filename) {
         File file = new File(filename);
         Scanner scanner;
@@ -241,6 +257,13 @@ public class GraphTrav {
         return number;
     }
 
+
+    /**
+     * PROMISES: Read input file
+     * REQUIRES: File Name
+     * @param data
+     * 
+     */
     public void readInput(String filename){
         File file = new File(filename);
         Scanner scanner;
@@ -255,6 +278,12 @@ public class GraphTrav {
         }        
     }
 
+    /**
+     * PROMISES: Read starting and ending nodes and place them in seperate arrays.
+     * REQUIRES: Query File Name
+     * @param data
+     * 
+     */
     public void readQuery(String filename){
         File file = new File(filename);
         Scanner scanner;
@@ -277,7 +306,12 @@ public class GraphTrav {
     }
 
 
-
+    /**
+     * PROMISES: DFS Writing to output.
+     * REQUIRES: String of results
+     * @param data
+     * @throws IOException
+     */
     public void writetoDFS(String result) throws IOException {
         output2 = new PrintWriter(new BufferedWriter(new FileWriter(DFSout,true)));
         output2.println(result);
@@ -308,16 +342,11 @@ public class GraphTrav {
         }
 
 
-        // for (int i = 0; i < graph.adjList.length; i++) {
-        //     graph.adjList[i].printList(graph.adjList[i]);
-        //     System.out.println();
-        // }
-        //System.out.println(graph.start_nodes.length);
+
         for(int i = 0; i < graph.start_nodes.length; i++){
             graph.DFS(graph.start_nodes[i], graph.end_nodes[i]);
             graph.writetoDFS(graph.path);
             graph.path = "";
-            //System.out.println(graph.start_nodes[i] + " " + graph.end_nodes[i]);
             
         }
 
