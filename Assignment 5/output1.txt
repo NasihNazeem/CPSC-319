@@ -1,0 +1,5 @@
+Load Factor:1
+Average Reads:5672
+Hashing Efficiency:0
+Longest Read:11344
+
