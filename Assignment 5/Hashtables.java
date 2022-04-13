@@ -28,6 +28,7 @@ public class Hashtables {
     private long longestRead;
     
 
+    
     public Hashtables(int cap){
         currentSize = 0;
         maxSize = cap;
@@ -36,22 +37,56 @@ public class Hashtables {
 
     }
 
+    /**
+     * PROMISES: Clear the Hashtable
+     * REQUIRES: Nothing required.
+     * 
+     */
     public void clear(){
         currentSize = 0;
         keys = new String[maxSize];
         vals = new String[maxSize];
     }
 
+    /**
+     * PROMISES: Return the size of the hashtable
+     * REQUIRES: Nohting required.
+     */
     public int getSize(){ return currentSize;}
 
+    /**
+     * PROMISES: Returns a true/false stating whether the hashtable is full or not
+     * REQUIRES: Nothing Reqiured.
+     */
     public boolean isFull(){return currentSize == maxSize;}
 
+    /**
+     * PROMISES: Returns a true/false stating whether the hashtable is empty or not
+     * REQUIRES: Nothing required.
+     */
     public boolean isEmpty(){return getSize() == 0;}
 
+    /**
+     * PROMISES: Checks table to see if it contains a certain word.
+     * REQUIRES: Requires the key to the word.
+     * @param key
+     */
     public boolean contains(String key){return getValue(key) != null;}
 
+    /**
+     * PROMISES: Has function that returns the modulus of the hashCode 
+     *           with respect to the maximum table size.
+     * REQUIRES: Key
+     * @param key
+     */
     public int hash(String key) {return key.hashCode() % maxSize;}
 
+    /**
+     * PROMISES: Inserts a value and key into the hashtable
+     * REQUIRES: Key, Value
+     * @param key
+     * @param value
+     */
     public void put(String key, String value){
         for (int i = index(hashCode(Integer.parseInt(key))); ; i++) {
             if (i == maxSize) {
@@ -67,6 +102,11 @@ public class Hashtables {
         }
     }
 
+    /**
+     * PROMISES: Returns the value/word in the hashtable
+     * REQUIRES: Key data 
+     * @param key
+     */
     public String getValue(String key){
         int i = hash(key);
         while(keys[i] != null){
@@ -79,6 +119,12 @@ public class Hashtables {
         return null;
     }
 
+    /**
+     * PROMISES: Returns the key, acts as a reverse search. This also returns the amount of words read before finding the key.
+     * REQUIRES: Key, read count
+     * @param key
+     * @param reads
+     */
     public String getKey(String value, int reads){
         //System.out.println("I reached here.");
         for(int i = 0; i < maxSize; i++){
@@ -92,6 +138,11 @@ public class Hashtables {
         return null;
     }
 
+    /**
+     * PROMISES: Searches for a word within the hashtable
+     * REQUIRES: Nothing required.
+     * @throws IOException
+     */
     public void search() throws IOException{
         String result;
 
@@ -112,15 +163,29 @@ public class Hashtables {
 
     }
 
+    /**
+     * PROMISES: Index of array
+     * REQUIRES: hash value
+     * @param hash
+     */
     private int index(int hash) {
         return Math.abs(hash) % maxSize;
     }
 
+    /**
+     * PROMISES: Manipulation of initial value to create a unique key.
+     * REQUIRES: Key data 
+     * @param h
+     */
     private int hashCode(int h) {
         h ^= (h >>> 20) ^ (h >>> 12);
         return h ^ (h >>> 7) ^ (h >>> 4);
     }
 
+    /**
+     * PROMISES: Prints the Hashtable
+     * REQUIRES: Nothing is required.
+     */
     public void printHashTable()
     {
         System.out.println("\nHash Table: ");
@@ -158,6 +223,12 @@ public class Hashtables {
   
     }
 
+    /**
+     * PROMISES: Reads input file and creates hashtable
+     * REQUIRES: Input File
+     * @param inputFileName
+     * @throws IOException
+     */
     public void readFile(String inputFileName) throws IOException{
         BufferedReader in = new BufferedReader(new FileReader(inputFileName));
         String str;
@@ -169,6 +240,12 @@ public class Hashtables {
         }
     }
     
+    /**
+     * PROMISES: Writes statistics to output file
+     * REQUIRES: Output file
+     * @param file
+     * @throws IOException
+     */
     public void writeToFile(String file) throws IOException{
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
         
@@ -182,6 +259,12 @@ public class Hashtables {
         writer.close();
     }
 
+    /**
+     * PROMISES: Calculations for the load factor, average reads, hashing efficiency,
+     *           and longest read.
+     * REQUIRES: Nothing is required.
+     * @throws  IOException
+     */
     public void Calculations() throws IOException{
         table.loadFactor = vals.length/maxSize;
 
